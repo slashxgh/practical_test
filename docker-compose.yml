@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    networks:
+      - nodeapp
+
+  app_server:
+    container_name: app_server
+    build:
+      context: ./server
+    env_file: ./server/.env
+    ports:
+      - "3000:3000"
+    networks:
+      - nodeapp
+    depends_on:
+      - mongodb  
+    command: ["npm", "start"]    
+
+
+networks:
+  nodeapp:
